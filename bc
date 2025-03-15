@@ -1,0 +1,51 @@
+#!/bin/bash
+
+write-help() {
+ echo "usage: ${0} <command> [params]"
+ echo
+ echo "available commands:"
+ echo "------------------------------------------------------------------"
+ echo " i <package> [params]          - installs a package using [params]"
+ echo "------------------------------------------------------------------"
+ echo " help                          - shows list of all commands"
+ echo
+}
+
+install-package() {
+ . ./installers.sh
+ if [ -z "${1}" ]; then
+  echo "error: package required"
+  echo "usage: ${0} i <package>"
+  write-packages
+  exit 1
+ fi
+ PKG="${1}"
+ shift
+ case "${PKG}" in
+  base) base-install $@;;
+  buttons) buttons-install $@;;
+  help) write-packages;;
+  *)
+   echo "error: unrecognized package '${PKG}'"
+   write-packages
+   exit 1
+ esac
+}
+
+if [ -z "${1}" ]; then
+ echo "error: command required"
+ write-help
+ exit 1
+fi
+
+CMD="${1}"
+shift
+
+case "${CMD}" in
+ i) install-package $@;;
+ help) write-help;;
+ *)
+  echo "error: unrecognized command '${CMD}'"
+  write-help
+  exit 1
+esac
