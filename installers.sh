@@ -19,10 +19,21 @@ base-install() {
   exit 1
  fi
  BDIR="${1}"
- git clone git@github.com:ReasonSharp/base-env.git "${PACKAGES_DIR}/base-env"
+ if [ -d "${PACKAGES_DIR}/base-env" ]; then
+  cd "${PACKAGES_DIR}/base-env" && git pull
+  cd - >/dev/null
+ else
+  git clone git@github.com:ReasonSharp/base-env.git "${PACKAGES_DIR}/base-env"
+ fi
  "${PACKAGES_DIR}/base-env/install.sh" "${BDIR}"
 }
 
 buttons-install() {
- git clone git@github.com:ReasonSharp/desktop-buttons.git "${PACKAGES_DIR}/desktop-buttons"
+ if [ -d "${PACKAGES_DIR}/desktop-buttons" ]; then
+  cd "${PACKAGES_DIR}/desktop-buttons" && git pull
+  cd - >/dev/null
+ else
+  git clone git@github.com:ReasonSharp/desktop-buttons.git "${PACKAGES_DIR}/desktop-buttons"
+ fi
+ "${PACKAGES_DIR}/desktop-buttons/install.sh"
 }
